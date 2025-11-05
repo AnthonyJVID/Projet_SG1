@@ -1,0 +1,651 @@
+metadata:
+  version: 0.3.0
+  updated: "2025-11-05"
+  color_points:
+    white: 0   # sans risque
+    orange: 1  # risque modéré
+    red: 2     # risque majeur
+
+questions:
+  # ───────── Bloc 1 : Intervention ─────────
+  - id: type_intervention
+    block: "Intervention"
+    label: "Type d'intervention"
+    type: select
+    options: ["Anneau Gastrique", "Sleeve", "Bi-Pass"]
+    weight: 0.0
+    risk_rules: [{ equals: "Anneau Gastrique", color: white }]
+
+  - id: date_intervention
+    block: "Intervention"
+    label: "Date de l'intervention"
+    type: date
+    weight: 0.0
+    risk_rules: []
+
+  - id: autre_intervention
+    block: "Intervention"
+    label: "Y a-t-il eu d'autres interventions gastriques auparavant ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: date_derniere_consult
+    block: "Intervention"
+    label: "Date de votre dernière consultation de suivi (chirurgien ou médecin nutritionniste)"
+    type: date
+    weight: 0.0
+    risk_rules: []
+
+  - id: poids_actuel
+    block: "Intervention"
+    label: "Poids actuel (kg)"
+    type: numeric
+    weight: 0.0
+    min: 0
+    step: 0.1
+    risk_rules: []
+
+  - id: poids_intervention
+    block: "Intervention"
+    label: "Poids au moment de l'intervention (kg)"
+    type: numeric
+    weight: 0.0
+    min: 0
+    step: 0.1
+    risk_rules: []
+
+  - id: poids_min
+    block: "Intervention"
+    label: "Le poids minimum atteint avec l’intervention (kg)"
+    type: numeric
+    weight: 0.0
+    min: 0
+    step: 0.1
+    risk_rules: []
+
+  - id: reprise_poids
+    block: "Intervention"
+    label: "Avez-vous repris beaucoup de poids depuis votre dernière consultation ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  # ─────── Bloc 2 : État général & événements ───────
+  - id: echelle_bien_etre
+    block: "État général"
+    label: "Sur une échelle de 0 à 10, comment allez-vous ? (0 = mal, 10 = très bien)"
+    type: scale
+    min: 0
+    max: 10
+    weight: 2.0     # ↑ poids (calibration)
+    risk_rules:
+      - range: [0, 3]
+        color: red
+      - range: [4, 6]
+        color: orange
+      - range: [7, 10]
+        color: white
+
+  - id: soucis_signal
+    block: "État général"
+    label: "Y a-t-il des soucis à signaler ?"
+    type: yesno
+    weight: 3.0     # ↑ poids (alerte libre)
+    risk_rules:
+      - equals: true
+        color: red
+      - equals: false
+        color: white
+
+  - id: rehospitalisation
+    block: "État général"
+    label: "Depuis le dernier suivi, avez-vous été réhospitalisé pour des problèmes relatifs à l’intervention ?"
+    type: yesno
+    weight: 4.0     # ↑↑ poids (événement sévère)
+    risk_rules:
+      - equals: true
+        color: red
+      - equals: false
+        color: white
+
+  - id: reoperation
+    block: "État général"
+    label: "Avez-vous été réopéré pour des problèmes relatifs à l’intervention ?"
+    type: yesno
+    weight: 4.0     # ↑↑ poids (événement sévère)
+    risk_rules:
+      - equals: true
+        color: red
+      - equals: false
+        color: white
+
+  # ───────── Bloc 3 : Alimentation ─────────
+  - id: nb_repas_jour
+    block: "Alimentation"
+    label: "Combien de « repas » faites-vous en moyenne par jour ?"
+    type: numeric
+    integer_only: true
+    min: 0
+    step: 1
+    weight: 0.0
+    risk_rules: []
+
+  - id: encas
+    block: "Alimentation"
+    label: "Y a-t-il des encas au besoin ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: satiete_solide
+    block: "Alimentation"
+    label: "Ressentez-vous encore la satiété si vous mangez du solide ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: aliments_bloquent
+    block: "Alimentation"
+    label: "Y a-t-il des aliments qui ne passent pas (= qui bloquent) ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: gout_odorat_modifies
+    block: "Alimentation"
+    label: "Le goût ou l’odorat sont-ils modifiés ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: degout_aliments
+    block: "Alimentation"
+    label: "Éprouvez-vous un dégoût pour certains aliments, depuis la chirurgie ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: difficulte_digestion
+    block: "Alimentation"
+    label: "Rencontrez-vous des difficultés à digérer certains aliments ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: sucre_plus
+    block: "Alimentation"
+    label: "Avez-vous l’impression de manger plus de sucre qu’avant votre chirurgie ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: viande_rouge_ok
+    block: "Alimentation"
+    label: "Sans difficultés — Viande rouge ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: orange
+
+  - id: viande_blanche_ok
+    block: "Alimentation"
+    label: "Sans difficultés — Viande blanche ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: orange
+
+  - id: fruits_legumes_ok
+    block: "Alimentation"
+    label: "Sans difficultés — Fruits et légumes ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: orange
+
+  - id: poisson_ok
+    block: "Alimentation"
+    label: "Sans difficultés — Poisson ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: orange
+
+  - id: graisses_ok
+    block: "Alimentation"
+    label: "Sans difficultés — Graisses ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: sucre_ok
+    block: "Alimentation"
+    label: "Sans difficultés — Sucre ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: orange
+
+  - id: fromage_ok
+    block: "Alimentation"
+    label: "Sans difficultés — Fromage ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: vomissements_yn
+    block: "Alimentation"
+    label: "Avez-vous des vomissements ?"
+    type: yesno
+    weight: 0.0    # l'intensité est portée par la fréquence ci-dessous
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: vomissements_freq
+    block: "Alimentation"
+    label: "Si oui, quelle fréquence ? (par semaine)"
+    type: numeric
+    integer_only: true
+    min: 0
+    step: 1
+    weight: 3.0     # ↑ poids (critère fort)
+    risk_rules:
+      - op: ">"
+        threshold: 3
+        color: red
+      - op: ">="
+        threshold: 1
+        color: orange
+      - op: "=="
+        threshold: 0
+        color: white
+
+  - id: vomissements_constitution
+    block: "Alimentation"
+    label: "Ces vomissements sont constitués de :"
+    type: select
+    options: ["aliments", "mousse/glaires"]
+    weight: 1.0
+    risk_rules:
+      - equals: "aliments"
+        color: orange
+      - equals: "mousse/glaires"
+        color: white
+
+  - id: douleurs_mangeant
+    block: "Alimentation"
+    label: "Avez-vous des douleurs en mangeant ?"
+    type: yesno
+    weight: 2.0     # ↑
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: brulures_estomac
+    block: "Alimentation"
+    label: "Avez-vous des brûlures d’estomac / remontées acides ?"
+    type: yesno
+    weight: 2.0     # ↑
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: protecteurs_gastriques
+    block: "Alimentation"
+    label: "Prenez-vous encore des protecteurs gastriques ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  - id: rots_beaucoup
+    block: "Alimentation"
+    label: "Avez-vous encore beaucoup de rots ?"
+    type: yesno
+    weight: 0.0
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: white
+
+  # ───────── Bloc 4 : Transit ─────────
+  - id: bruits_ventre
+    block: "Transit"
+    label: "Avez-vous encore beaucoup de bruits dans le ventre ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: ballonnements
+    block: "Transit"
+    label: "Souffrez-vous de ballonnements (à distance des repas) ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: selles_moy
+    block: "Transit"
+    label: "Combien de fois allez-vous à la selle, en moyenne, par jour ?"
+    type: numeric
+    integer_only: true
+    min: 0
+    step: 1
+    weight: 1.0
+    risk_rules:
+      - op: ">"
+        threshold: 4
+        color: orange
+      - op: "<="
+        threshold: 4
+        color: white
+
+  - id: selles_min
+    block: "Transit"
+    label: "Dans le meilleur des cas (min) : nombre par jour"
+    type: numeric
+    integer_only: true
+    min: 0
+    step: 1
+    weight: 0.0
+    risk_rules: []
+
+  - id: selles_max
+    block: "Transit"
+    label: "Dans le pire des cas (max) : nombre par jour"
+    type: numeric
+    integer_only: true
+    min: 0
+    step: 1
+    weight: 1.0
+    risk_rules:
+      - op: ">"
+        threshold: 5
+        color: orange
+      - op: "<="
+        threshold: 5
+        color: white
+
+  - id: transit_lie_alim
+    block: "Transit"
+    label: "Est-ce uniquement lié au type d’alimentation ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: consistance_selles
+    block: "Transit"
+    label: "Quelle consistance ont vos selles en moyenne ?"
+    type: select
+    options: ["moulée", "normale"]
+    weight: 0.0
+    risk_rules: [{ equals: "moulée", color: white }]
+
+  - id: courir_wc
+    block: "Transit"
+    label: "Vous arrive-t-il de devoir courir aux WC ?"
+    type: yesno
+    weight: 2.0     # ↑
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: flatulences
+    block: "Transit"
+    label: "Avez-vous encore beaucoup de gaz (flatulences) ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: flatulences_lie_alim
+    block: "Transit"
+    label: "Est-ce lié au type d’alimentation (certains aliments provoquent-ils des flatulences) ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: odeur_terrible
+    block: "Transit"
+    label: "Est-ce que l’odeur est « terrible » ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  # ───────── Bloc 5 : Vitamines ─────────
+  - id: supp_vitamines
+    block: "Vitamines"
+    label: "Prenez-vous encore une supplémentation en vitamines ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: vitamines_quotidien
+    block: "Vitamines"
+    label: "La prenez-vous quotidiennement ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: bilan_sanguin_12m
+    block: "Vitamines"
+    label: "Avez-vous fait un bilan sanguin nutritionnel les 12 derniers mois ?"
+    type: yesno
+    weight: 2.0     # ↑
+    risk_rules:
+      - equals: true
+        color: white
+      - equals: false
+        color: orange
+
+  # ───────── Bloc 6 : Qualité de vie & symptômes ─────────
+  - id: soucis_cicatrices
+    block: "Qualité de vie"
+    label: "Avez-vous des soucis au niveau des cicatrices (douleurs, boules) ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: activite_physique
+    block: "Qualité de vie"
+    label: "Pratiquez-vous régulièrement une activité physique ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: vie_sociale
+    block: "Qualité de vie"
+    label: "Avez-vous retrouvé une vie sociale satisfaisante ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: qdv_amelioration
+    block: "Qualité de vie"
+    label: "Considérez-vous que la chirurgie a amélioré votre qualité de vie ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: plaisir_manger_diminue
+    block: "Qualité de vie"
+    label: "Considérez-vous que la chirurgie a diminué le plaisir de manger ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: malaise_postprandial
+    block: "Qualité de vie"
+    label: "Vous arrive-t-il de faire des malaises immédiatement après avoir mangé ?"
+    type: yesno
+    weight: 2.0     # ↑
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: malaise_distance
+    block: "Qualité de vie"
+    label: "Vous arrive-t-il de faire des malaises, à distance des repas ?"
+    type: yesno
+    weight: 2.0     # ↑
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: malaise_nuit
+    block: "Qualité de vie"
+    label: "Vous arrive-t-il de faire des malaises la nuit (sueurs/tremblements) ?"
+    type: yesno
+    weight: 2.0     # ↑
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: peau_exces
+    block: "Qualité de vie"
+    label: "La perte de poids a-t-elle occasionné une importante « peau qui pend » ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: peau_genante
+    block: "Qualité de vie"
+    label: "Cet excès de peau vous gêne-t-il dans vos activités quotidiennes ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: chirurgie_reparatrice
+    block: "Qualité de vie"
+    label: "Avez-vous bénéficié d’une chirurgie réparatrice ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: memoire_problemes
+    block: "Qualité de vie"
+    label: "Depuis l’intervention, souffrez-vous de problèmes de mémoire ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: grosse_fatigue
+    block: "Qualité de vie"
+    label: "Depuis l’intervention, souffrez-vous d’une grosse fatigue ?"
+    type: yesno
+    weight: 1.0
+    risk_rules:
+      - equals: true
+        color: orange
+      - equals: false
+        color: white
+
+  - id: vertiges
+    block: "Qualité de vie"
+    label: "Depuis l’intervention, souffrez-vous de vertiges ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: perte_cheveux
+    block: "Qualité de vie"
+    label: "Depuis l’intervention, avez-vous une grosse perte de cheveux ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]
+
+  - id: dents_problemes
+    block: "Qualité de vie"
+    label: "Depuis l’intervention, avez-vous d’importants problèmes de dents (déchaussement, caries, dents qui cassent) ?"
+    type: yesno
+    weight: 0.0
+    risk_rules: [{ equals: true, color: white }, { equals: false, color: white }]

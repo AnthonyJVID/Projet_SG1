@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.pyo
+*.pyd
+
+# Environnements virtuels (tous OS)
+.venv/
+venv/
+ENV/
+env/
+*.env
+.env
+
+# Venv Windows actuel dans ce dossier
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Données locales
+data/responses.csv
+
+# Streamlit secrets (ne jamais commit si tu en mets)
+.streamlit/secrets.toml
+
+# Dossiers divers du venv / libs
+etc/
+share/
+
+# Données locales (tout le dossier)
+data/
