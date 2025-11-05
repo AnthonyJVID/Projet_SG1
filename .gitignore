@@ -35,3 +35,7 @@ share/
 
 # Données locales (tout le dossier)
 data/
+
+# Présentations à ne pas versionner
+/SG1/présentation-ProjetSG1.pdf
+/SG1/présentation-ProjetSG1.pptx
