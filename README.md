@@ -1,4 +1,4 @@
-# Auto-questionnaire — Contrôle Bariatrie
+# Auto-questionnaire — Contrôle Bariatrique
 
 Application **Streamlit** (Python) pour l’auto-questionnaire de suivi bariatrique.
 
