@@ -9,7 +9,7 @@ from scoring import ScoreEngine
 
 # ───────────────────────────── Page config ─────────────────────────────
 st.set_page_config(
-    page_title="Contrôle Bariatrie — Auto-questionnaire",
+    page_title="Questionnaire de contrôle bariatrique",
     page_icon="🩺",
     layout="wide",
 )
@@ -30,8 +30,8 @@ COLOR_HEX = {"white": "#e6e6e6", "orange": "#ffad33", "red": "#ff4d4d"}
 cfg = load_config()
 engine = ScoreEngine(cfg)
 
-st.title("🩺 Auto-questionnaire — Contrôle Bariatrie")
-st.caption("UI réactive : sous-questions affichées juste sous leur question. Score calibré sur des maxima réalistes.")
+st.title("🩺 Questionnaire de contrôle bariatrique")
+st.caption("Certaines questions s'activeront en fonction de vos réponses.")
 
 # ──────────────────── Infos patient (hors YAML, non scoré) ────────────────────
 with st.container():
@@ -41,7 +41,7 @@ with st.container():
     with c2:
         prenom = st.text_input("Prénom", "")
     with c3:
-        date_du_jour = st.date_input("Date (auto)", value=dt.date.today(), format="DD/MM/YYYY")
+        date_du_jour = st.date_input("Date du jour", value=dt.date.today(), format="DD/MM/YYYY")
 
 # ───────────────────────────── Saisie principale ──────────────────────────────
 answers = {}
@@ -192,19 +192,19 @@ for q in cfg.get("questions", []):
                 vit_selected.append(opt)
         answers["vitamines_list"] = vit_selected
         answers["vitamines_autres"] = st.text_area(
-            "Autres vitamines (si concerné, max 5000 caractères)",
+            "Autres vitamines (si concerné)",
             max_chars=5000, height=100, disabled=not answers[qid], key="vitamines_autres"
         )
 
 # ───────────────────────────── Actions bas de page ─────────────────────────────
 c1, c2 = st.columns([1,1])
 with c1:
-    compute = st.button("Calculer le score", type="primary")
+    compute = st.button("Vérification de votre santé", type="primary")
 with c2:
     save_csv = st.checkbox(
-        "Sauvegarder localement (CSV)**",
+        "Télécharger une copie (format.csv)",
         value=False,
-        help="Enregistre dans data/responses.csv (local) — pas de cloud."
+        help="Enregistre dans data/responses.csv"
     )
 
 # ─────────────────────────── Résultats & scoring ───────────────────────────
@@ -347,4 +347,4 @@ if compute:
         mime="application/json",
     )
 else:
-    st.info("Renseigne le questionnaire puis clique **Calculer le score**.")
+    st.info("Renseignez le questionnaire puis cliquer sur le bouton de vérification.")
