@@ -125,25 +125,25 @@ for q in cfg.get("questions", []):
 
     if qid == "soucis_signal":
         answers["soucis_details"] = st.text_area(
-            "Précisez les soucis (max 5000 caractères)",
+            "Précisez les soucis",
             max_chars=5000, height=120, disabled=not answers[qid], key="soucis_details"
         )
 
     if qid == "reoperation":
         answers["reoperation_details"] = st.text_area(
-            "Précisez la/les réopération(s) (max 5000 caractères)",
+            "Précisez la/les réopération(s)",
             max_chars=5000, height=120, disabled=not answers[qid], key="reoperation_details"
         )
 
     if qid == "aliments_bloquent":
         answers["aliments_bloquent_details"] = st.text_area(
-            "Si oui, lesquels ? (max 5000 caractères)",
+            "Si oui, lesquels ?",
             max_chars=5000, height=120, disabled=not answers[qid], key="aliments_bloquent_details"
         )
 
     if qid == "difficulte_digestion":
         answers["difficulte_digestion_details"] = st.text_area(
-            "Si oui, précisez (max 5000 caractères)",
+            "Si oui, précisez",
             max_chars=5000, height=120, disabled=not answers[qid], key="difficulte_digestion_details"
         )
 
@@ -164,7 +164,7 @@ for q in cfg.get("questions", []):
 
     if qid == "douleurs_mangeant":
         answers["douleurs_mangeant_details"] = st.text_area(
-            "Si oui, quel type d'aliments ? (max 5000 caractères)",
+            "Si oui, quel type d'aliments ?",
             max_chars=5000, height=120, disabled=not answers[qid], key="douleurs_mangeant_details"
         )
 
